@@ -1,0 +1,44 @@
+# ~/.zshrc
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Comandos generales
+
+alias la='ls -la'
+# Reemplazar ls por lsd
+alias ls='lsd --color=auto'
+#alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+alias Facultad='cd /mnt/k/Facultad'
+
+# Exclusivos Arch
+alias actualizar='sudo pacman -Syu'
+
+# Exports
+export PATH="$HOME/bin:$PATH"
+
+# Theme
+#eval "$(oh-my-posh init zsh --config /usr/share/oh-my-posh/themes/agnoster.omp.json)"
+eval "$(oh-my-posh init zsh --config ~/.local/share/oh-my-posh/themes/craver.omp.json)"
+
+# Prompt
+PS1='[%n@%m %1~]%# '
+
+### Configuración de Zinit ###
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Instalando %F{33}ZDHARMA-CONTINUUM%F{220} Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})...%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Instalación exitosa.%f%b" || \
+        print -P "%F{160} La clonación ha fallado.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Plugins de Zsh / Complementos
+zinit load zsh-users/zsh-autosuggestions
+zinit load zsh-users/zsh-syntax-highlighting
